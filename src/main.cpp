@@ -3,7 +3,8 @@
 #include "Ucglib.h"
  
 unsigned long mil;
-int pinDHT11 = 6, bgcol[3] = {0,10,10};
+int pinDHT11 = 6;
+int bgcol[3] = {0,10,10}, bncol[3] = {28,208,255}, btcl1[3] = {0,127,10}, btcl2[3] = {127,0,10};
 char boneSign = '*';
 byte temperature = 0,  humidity = 0 , oldtemp= 0, oldhum = 0;
 SimpleDHT11 dht11(pinDHT11);
@@ -14,7 +15,7 @@ Ucglib_ST7735_18x128x160_HWSPI ucg(/*cd=*/ 9, /*cs=*/ 8, /*reset=*/ 7);
 void showBones(int number){
   ucg.setColor(bgcol[0], bgcol[1], bgcol[2]); ucg.drawBox(18, 51, 52, 52);
   ucg.setColor(63, 63, 63); ucg.drawRFrame(16, 49, 56, 56, 5);
-  ucg.setFont(ucg_font_ncenR12_tr); ucg.setColor(28, 208, 255);
+  ucg.setFont(ucg_font_ncenR12_tr); ucg.setColor(bncol[0], bncol[1], bncol[2]);
 
   switch (number) {
     case 1: {
@@ -73,6 +74,14 @@ void showDHT () {
     oldhum = humidity; oldtemp = temperature;
   }
 }
+
+void showBattery (int lvl) {
+  ucg.setColor(btcl1[0], btcl1[1], btcl1[2]); 
+  if (lvl > 0) ucg.drawBox(116, 2, 2, 4);  
+  if (lvl > 1)ucg.drawBox(119, 2, 2, 4);
+  if (lvl > 2)ucg.drawBox(122, 2, 2, 4);
+  ucg.drawBox(126, 2, 1, 4); ucg.drawFrame(114, 0, 12, 8);
+}
  
 void setup() {
   pinMode(5, OUTPUT);
@@ -80,20 +89,27 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Start");
   ucg.begin(UCG_FONT_MODE_TRANSPARENT);
-  //ucg.begin(UCG_FONT_MODE_SOLID);
-  ucg.clearScreen();
+  // ucg.begin(UCG_FONT_MODE_SOLID);
+  // ucg.clearScreen();
   ucg.setColor(bgcol[0], bgcol[1], bgcol[2]); ucg.drawBox(0, 0, 128, 160);
+  
   ucg.setFont(ucg_font_ncenR10_tr);
-  ucg.setColor(255, 255, 255);
   //ucg.setColor(0, 255, 0);
   // ucg.setColor(1, 255, 255,255);
- 
+  showBattery(0); delay(500);
+  showBattery(1); delay(500);
+  showBattery(2); delay(500);
+  showBattery(3); delay(500);
+
+  ucg.setColor(255, 255, 255);
   ucg.setPrintPos(10,25); ucg.print("Happy bones!");
+  
+  showBones(random(1, 6));
  
 }
  
 void loop() {
-  if (millis() > mil + 5000 || millis() < mil){
+  if (millis() > mil + 15000 || millis() < mil){
     mil = millis()/1000*1000;
 
     showDHT();
