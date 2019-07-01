@@ -3,8 +3,8 @@
 #include "Ucglib.h"
  
 unsigned long mil;
-int pinDHT11 = 6;
-int bgcol[3] = {0,10,10}, bncol[3] = {28,208,255}, btcl1[3] = {0,127,10}, btcl2[3] = {127,0,10};
+uint8_t pinDHT11 = 6, dimm = 127;
+uint8_t bgcol[3] = {0,10,10}, bncol[3] = {28,208,255}, btcl1[3] = {0,127,10}, btcl2[3] = {127,0,10};
 char boneSign = '*';
 byte temperature = 0,  humidity = 0 , oldtemp= 0, oldhum = 0;
 SimpleDHT11 dht11(pinDHT11);
@@ -85,6 +85,7 @@ void showBattery (int lvl) {
  
 void setup() {
   pinMode(5, OUTPUT);
+  pinMode(10, OUTPUT);
   digitalWrite(5, HIGH);
   Serial.begin(115200);
   Serial.println("Start");
@@ -96,6 +97,10 @@ void setup() {
   ucg.setFont(ucg_font_ncenR10_tr);
   //ucg.setColor(0, 255, 0);
   // ucg.setColor(1, 255, 255,255);
+  analogWrite(10, 15); delay(150);
+  analogWrite(10, 31); delay(150);
+  analogWrite(10, 63); delay(150);
+  analogWrite(10, 127); delay(150);
   showBattery(0); delay(500);
   showBattery(1); delay(500);
   showBattery(2); delay(500);
