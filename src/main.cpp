@@ -49,7 +49,7 @@ void showBones(int number){
       break;
     }
   }
-  Serial.println("Show Bones" + String(number));
+  // Serial.println("Show Bones" + String(number));
 }
 
 void showDHT () {
