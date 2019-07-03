@@ -1,3 +1,21 @@
+/**
+ * Nano with DHT11 and ST7735
+ * GITHUB: https://github.com/EduardsZ/NanoDHT11ST7735
+ * 
+ * This thing shows temp and some other info, like bones
+ * 
+ * PINS:
+ * 5 - POWER TO DHT11 (USED BECAUSE NO OTHER FREE POWER PINS)
+ * 6 - DATA PIN FROM DHT11
+ * 7 - LCD RESET PIN
+ * 8 - LCD CS PIN
+ * 9 - LCD A0/DC PIN
+ * 10 - LCD LED DIMM PIN
+ * 11 - LCD SDA PIN
+ * 13 - LCD SCK PIN
+ * 
+ */
+
 #include <SimpleDHT.h>
 #include <SPI.h>
 #include "Ucglib.h"
@@ -10,7 +28,6 @@ byte temperature = 0,  humidity = 0 , oldtemp= 0, oldhum = 0;
 SimpleDHT11 dht11(pinDHT11);
 // Ucglib_ST7735_18x128x160_SWSPI ucg(/*sclk=*/ 0, /*data=*/ 4, /*cd=*/ 10, /*cs=*/ 2, /*reset=*/ 5);
 Ucglib_ST7735_18x128x160_HWSPI ucg(/*cd=*/ 9, /*cs=*/ 8, /*reset=*/ 7);
- 
  
 void showBones(int number){
   ucg.setColor(bgcol[0], bgcol[1], bgcol[2]); ucg.drawBox(18, 51, 52, 52);
@@ -49,21 +66,20 @@ void showBones(int number){
       break;
     }
   }
-  // Serial.println("Show Bones" + String(number));
 }
 
-void showDHT () {
-  // ucg.clearScreen();
-  int err = SimpleDHTErrSuccess;
+void getTH () {
+    int err = SimpleDHTErrSuccess;
   if ((err = dht11.read(&temperature, &humidity, NULL)) != SimpleDHTErrSuccess) {
     Serial.print("Read DHT11 failed, err="); Serial.println(err);delay(1000);
     return;
   }
-
   Serial.print("Sample OK: ");
   Serial.print((int)temperature); Serial.print(" *C, "); 
   Serial.print((int)humidity); Serial.println(" %");
+}
 
+void showDHT () {
   if(oldhum != humidity || oldtemp != temperature) {
     ucg.setColor(bgcol[0], bgcol[1], bgcol[2]); ucg.drawBox(10, 0, 118, 38);
     ucg.setColor(0,255,0);
@@ -93,9 +109,7 @@ void setup() {
   // ucg.begin(UCG_FONT_MODE_SOLID);
   // ucg.clearScreen();
   ucg.setColor(bgcol[0], bgcol[1], bgcol[2]); ucg.drawBox(0, 0, 128, 160);
-  
   ucg.setFont(ucg_font_ncenR10_tr);
-  //ucg.setColor(0, 255, 0);
   // ucg.setColor(1, 255, 255,255);
   analogWrite(10, 15); delay(150);
   analogWrite(10, 31); delay(150);
@@ -109,6 +123,8 @@ void setup() {
   ucg.setColor(255, 255, 255);
   ucg.setPrintPos(10,25); ucg.print("Happy bones!");
   
+  getTH ();
+  showDHT ();
   showBones(random(1, 6));
  
 }
@@ -116,8 +132,8 @@ void setup() {
 void loop() {
   if (millis() > mil + 15000 || millis() < mil){
     mil = millis()/1000*1000;
-
-    showDHT();
+    getTH ();
+    showDHT ();
     showBones(random(1, 6));
   }
  
