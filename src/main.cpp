@@ -22,7 +22,7 @@
  
 unsigned long mil;
 uint8_t pinDHT11 = 6, dimm = 127;
-uint8_t bgcol[3] = {0,10,10}, bncol[3] = {28,208,255}, btcl1[3] = {0,127,10}, btcl2[3] = {127,0,10};
+uint8_t bgcol[3] = {255,255,255}, bncol[3] = {28,208,255}, btcl1[3] = {0,15,10}, btcl2[3] = {127,0,10};
 char boneSign = '*';
 byte temperature = 0,  humidity = 0 , oldtemp= 0, oldhum = 0;
 SimpleDHT11 dht11(pinDHT11);
@@ -82,7 +82,7 @@ void getTH () {
 void showDHT () {
   if(oldhum != humidity || oldtemp != temperature) {
     ucg.setColor(bgcol[0], bgcol[1], bgcol[2]); ucg.drawBox(10, 0, 118, 38);
-    ucg.setColor(0,255,0);
+    ucg.setColor(0,31,0);
     ucg.setPrintPos(10,30);
     ucg.print((String)temperature + " *C");
     ucg.setPrintPos(64,30);
@@ -113,7 +113,7 @@ void setup() {
   // ucg.setColor(1, 255, 255,255);
 
   analogWrite(10, 15); delay(150);analogWrite(10, 31); delay(150);
-  analogWrite(10, 63); delay(150);analogWrite(10, 127); delay(150);
+  analogWrite(10, 63); delay(150);analogWrite(10, 4); delay(150);
   showBattery(0); delay(500);showBattery(1); delay(500);
   showBattery(2); delay(500);showBattery(3); delay(500);
 
