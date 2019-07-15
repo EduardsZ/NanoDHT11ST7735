@@ -93,7 +93,7 @@ void showDHT () {
 
 void showBattery (int lvl) {
   ucg.setColor(btcl1[0], btcl1[1], btcl1[2]); 
-  if (lvl > 0) ucg.drawBox(116, 2, 2, 4);  
+  if (lvl > 0)ucg.drawBox(116, 2, 2, 4);  
   if (lvl > 1)ucg.drawBox(119, 2, 2, 4);
   if (lvl > 2)ucg.drawBox(122, 2, 2, 4);
   ucg.drawBox(126, 2, 1, 4); ucg.drawFrame(114, 0, 12, 8);
