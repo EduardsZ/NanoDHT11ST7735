@@ -111,14 +111,11 @@ void setup() {
   ucg.setColor(bgcol[0], bgcol[1], bgcol[2]); ucg.drawBox(0, 0, 128, 160);
   ucg.setFont(ucg_font_ncenR10_tr);
   // ucg.setColor(1, 255, 255,255);
-  analogWrite(10, 15); delay(150);
-  analogWrite(10, 31); delay(150);
-  analogWrite(10, 63); delay(150);
-  analogWrite(10, 127); delay(150);
-  showBattery(0); delay(500);
-  showBattery(1); delay(500);
-  showBattery(2); delay(500);
-  showBattery(3); delay(500);
+
+  analogWrite(10, 15); delay(150);analogWrite(10, 31); delay(150);
+  analogWrite(10, 63); delay(150);analogWrite(10, 127); delay(150);
+  showBattery(0); delay(500);showBattery(1); delay(500);
+  showBattery(2); delay(500);showBattery(3); delay(500);
 
   ucg.setColor(255, 255, 255);
   ucg.setPrintPos(10,25); ucg.print("Happy bones!");
@@ -126,7 +123,6 @@ void setup() {
   getTH ();
   showDHT ();
   showBones(random(1, 6));
- 
 }
  
 void loop() {
