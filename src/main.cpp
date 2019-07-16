@@ -93,35 +93,35 @@ void showDHT () {
 
 void showBattery (int lvl) {
   ucg.setColor(btcl1[0], btcl1[1], btcl1[2]); 
-  if (lvl > 0)ucg.drawBox(116, 2, 2, 4);  
-  if (lvl > 1)ucg.drawBox(119, 2, 2, 4);
-  if (lvl > 2)ucg.drawBox(122, 2, 2, 4);
-  ucg.drawBox(126, 2, 1, 4); ucg.drawFrame(114, 0, 12, 8);
+  if (lvl > 0)ucg.drawBox(116, 3, 2, 4);  
+  if (lvl > 1)ucg.drawBox(119, 3, 2, 4);
+  if (lvl > 2)ucg.drawBox(122, 3, 2, 4);
+  ucg.drawBox(126, 3, 1, 4); ucg.drawFrame(114, 1, 12, 8);
 }
  
 void setup() {
-  pinMode(5, OUTPUT);
+  // pinMode(5, OUTPUT);
   pinMode(10, OUTPUT);
-  digitalWrite(5, HIGH);
+  // digitalWrite(5, HIGH);
   Serial.begin(115200);
   Serial.println("Start");
   ucg.begin(UCG_FONT_MODE_TRANSPARENT);
   // ucg.begin(UCG_FONT_MODE_SOLID);
   // ucg.clearScreen();
   ucg.setColor(bgcol[0], bgcol[1], bgcol[2]); ucg.drawBox(0, 0, 128, 160);
-  ucg.setFont(ucg_font_ncenR10_tr);
+  ucg.setFont(ucg_font_ncenR12_tr);
   // ucg.setColor(1, 255, 255,255);
 
-  analogWrite(10, 15); delay(200);analogWrite(10, 31); delay(200);
-  analogWrite(10, 63); delay(500);analogWrite(10, 8); delay(500);
-  showBattery(0); delay(500);showBattery(1); delay(500);
-  showBattery(2); delay(500);showBattery(3); delay(500);
+  /* analogWrite(10, 15); delay(200);analogWrite(10, 31); delay(200);
+  analogWrite(10, 63); delay(500); */analogWrite(10, 8); delay(500);
+  /* showBattery(0); delay(500);showBattery(1); delay(500);
+  showBattery(2); delay(500); */showBattery(3); delay(500);
 
-  ucg.setColor(0, 0, 0);
-  ucg.setPrintPos(10,25); ucg.print("Happy bones!");delay(1000);
+  // ucg.setColor(0, 0, 0);
+  // ucg.setPrintPos(10,25); ucg.print("Happy bones!");delay(1000);
   
-  getTH ();
-  showDHT ();
+  getTH();
+  showDHT();
   showBones(random(1, 6));
 }
  
