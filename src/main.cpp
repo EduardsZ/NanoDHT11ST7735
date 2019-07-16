@@ -81,7 +81,7 @@ void getTH () {
 
 void showDHT () {
   if(oldhum != humidity || oldtemp != temperature) {
-    ucg.setColor(bgcol[0], bgcol[1], bgcol[2]); ucg.drawBox(10, 0, 118, 38);
+    ucg.setColor(bgcol[0], bgcol[1], bgcol[2]); ucg.drawBox(0, 10, 100, 38);
     ucg.setColor(0,31,0);
     ucg.setPrintPos(10,30);
     ucg.print((String)temperature + " *C");
@@ -112,13 +112,13 @@ void setup() {
   ucg.setFont(ucg_font_ncenR10_tr);
   // ucg.setColor(1, 255, 255,255);
 
-  analogWrite(10, 15); delay(150);analogWrite(10, 31); delay(150);
-  analogWrite(10, 63); delay(150);analogWrite(10, 4); delay(150);
+  analogWrite(10, 15); delay(200);analogWrite(10, 31); delay(200);
+  analogWrite(10, 63); delay(500);analogWrite(10, 8); delay(500);
   showBattery(0); delay(500);showBattery(1); delay(500);
   showBattery(2); delay(500);showBattery(3); delay(500);
 
-  ucg.setColor(255, 255, 255);
-  ucg.setPrintPos(10,25); ucg.print("Happy bones!");
+  ucg.setColor(0, 0, 0);
+  ucg.setPrintPos(10,25); ucg.print("Happy bones!");delay(1000);
   
   getTH ();
   showDHT ();
