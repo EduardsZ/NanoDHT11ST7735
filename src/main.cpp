@@ -1,15 +1,16 @@
   /**
-   * Nano with DHT11 and ST7735
+   * Nano with DHT11, ST7735 and WS2812
    * GITHUB: https://github.com/EduardsZ/NanoDHT11ST7735
    * 
    * This thing shows temp and some other info, like bones
+   * Assumed to flash with platformio on VS code
    * 
    * PINS:
-   * 5 - THIS IS WS2812B LEDs DATA PIN
-   * 6 - DATA PIN FROM DHT11
-   * 7 - LCD RESET PIN
-   * 8 - LCD CS PIN
-   * 9 - LCD A0/DC PIN
+   * 5  - THIS IS WS2812B LEDs DATA PIN
+   * 6  - DATA PIN FROM DHT11
+   * 7  - LCD RESET PIN
+   * 8  - LCD CS PIN
+   * 9  - LCD A0/DC PIN
    * 10 - LCD LED DIMM PIN
    * 11 - LCD SDA PIN
    * 13 - LCD SCK PIN
