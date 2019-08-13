@@ -149,5 +149,4 @@
       LED.set_crgb_at(0, value);
       LED.sync();
     }
-  
   }
