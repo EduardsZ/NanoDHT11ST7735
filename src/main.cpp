@@ -25,7 +25,7 @@
   #define LEDS_NUMBER 16
   
   unsigned long mil;
-  uint8_t pinDHT11 = 6, dimm = 127;
+  uint8_t pinDHT11 = 6, dimm = 127, pomodoro = 0;
   uint8_t bgcol[3] = {255,255,255}, bncol[3] = {28,33,127}, btcl1[3] = {0,15,10}, btcl2[3] = {127,0,10};
   char boneSign = '*';
   byte temperature = 0,  humidity = 0 , oldtemp= 0, oldhum = 0;
@@ -120,7 +120,7 @@
 
     LED.setOutput(5);
 
-    analogWrite(10, 5); delay(500);
+    analogWrite(10, 31); delay(500);
     showBattery(3); delay(500);
     
     getTH();
@@ -131,6 +131,16 @@
     for (int nn = 0; nn < LEDS_NUMBER; nn++){
       LED.set_crgb_at(nn, value);
     }
+    value.r = 47; value.g = 15; value.b = 0;
+    LED.set_crgb_at(0, value);
+    LED.sync();
+    delay(500);
+    value.r = 0; value.g = 63; value.b = 0;
+    LED.set_crgb_at(0, value);
+    LED.sync();
+    delay(500);
+    value.r = 0; value. g = 0; value.b = 63;
+    LED.set_crgb_at(0, value);
     LED.sync();
   }
   
@@ -140,12 +150,16 @@
       getTH ();
       showDHT ();
       showBones(random(1, 6));
+      pomodoro++;
 
-      value.b = 15; value.g = 15; value.r = 15;
-      LED.set_crgb_at(0, value);
-      LED.sync();
-      delay(15);
+      if (pomodoro < 100) {
       value.b = 0; value.g = 15; value.r = 0;
+      } else if (pomodoro < 120) {
+         value.r = 31; value.g = 15; value.b = 0;
+      } else {
+        value.r = 31; value.g = 15; value.b = 15;
+        pomodoro = 0;
+      }
       LED.set_crgb_at(0, value);
       LED.sync();
     }
