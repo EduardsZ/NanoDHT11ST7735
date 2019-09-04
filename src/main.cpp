@@ -26,7 +26,7 @@
   
   unsigned long mil;
   uint8_t pinDHT11 = 6, dimm = 127, pomodoro = 0;
-  uint8_t bgcol[3] = {255,255,255}, bncol[3] = {28,33,127}, btcl1[3] = {0,15,10}, btcl2[3] = {127,0,10};
+  uint8_t bgcol[3] = {255,255,63}, bncol[3] = {28,33,127}, btcl1[3] = {0,15,10}, btcl2[3] = {127,0,10};
   char boneSign = '*';
   byte temperature = 0,  humidity = 0 , oldtemp= 0, oldhum = 0;
   cRGB value;
@@ -38,7 +38,7 @@
   
   void showBones(int number){
     ucg.setColor(bgcol[0], bgcol[1], bgcol[2]); ucg.drawBox(18, 51, 52, 52);
-    ucg.setColor(63, 63, 63); ucg.drawRFrame(16, 49, 56, 56, 5);
+    ucg.setColor(63, 63, 63); ucg.drawRFrame(16, 49, 56, 56, 7);
     ucg.setFont(ucg_font_ncenR12_tr); ucg.setColor(bncol[0], bncol[1], bncol[2]);
 
     switch (number) {
@@ -106,7 +106,36 @@
     if (lvl > 2)ucg.drawBox(122, 3, 2, 4);
     ucg.drawBox(126, 3, 1, 4); ucg.drawFrame(114, 1, 12, 8);
   }
+
+  void showLed (int r, int g, int b, int num = 0) {
+    cRGB val;
+    Serial.print("num ");Serial.println(num);
+    Serial.print("r ");Serial.println(r);
+    Serial.print("g ");Serial.println(g);
+    Serial.print("b ");Serial.println(b);
+    val.r = r; val. g = g; val.b = b;
+    LED.set_crgb_at(num, val);
+    LED.sync();
+  }
+
+  void makeFlash (int del) {
+    for (int i = 0; i < LEDS_NUMBER / 2; i++){
+      showLed(255, 127, 127, LEDS_NUMBER / 2 + i);
+      showLed(255, 127, 127, LEDS_NUMBER / 2 - i - 1);
+      delay(del);
+      showLed(0, 0, 0, LEDS_NUMBER / 2 + i);
+      showLed(0, 0, 0, LEDS_NUMBER / 2 - i - 1);
+      delay(del/4);
+    }
+  }
   
+  void resetLedStrip() {
+    value.b = 0; value.g = 0; value.r = 0;
+    for (int nn = 0; nn < LEDS_NUMBER; nn++){
+      LED.set_crgb_at(nn, value);
+    }
+  }
+
   void setup() {
     pinMode(10, OUTPUT);
     Serial.begin(115200);
@@ -127,21 +156,13 @@
     showDHT();
     showBones(random(1, 6));
 
-    value.b = 0; value.g = 0; value.r = 0;
-    for (int nn = 0; nn < LEDS_NUMBER; nn++){
-      LED.set_crgb_at(nn, value);
+    resetLedStrip();
+    for (int iii = 0; iii < 7; iii++) {
+      makeFlash(7);
+      delay(150);
     }
-    value.r = 47; value.g = 15; value.b = 0;
-    LED.set_crgb_at(0, value);
-    LED.sync();
-    delay(500);
-    value.r = 0; value.g = 63; value.b = 0;
-    LED.set_crgb_at(0, value);
-    LED.sync();
-    delay(500);
-    value.r = 0; value. g = 0; value.b = 63;
-    LED.set_crgb_at(0, value);
-    LED.sync();
+    
+    showLed(0, 0, 63);
   }
   
   void loop() {
@@ -152,14 +173,6 @@
       showBones(random(1, 6));
       pomodoro++;
 
-      if (pomodoro < 100) {
-      value.b = 0; value.g = 15; value.r = 0;
-      } else if (pomodoro < 120) {
-         value.r = 31; value.g = 15; value.b = 0;
-      } else {
-        value.r = 31; value.g = 15; value.b = 15;
-        pomodoro = 0;
-      }
       LED.set_crgb_at(0, value);
       LED.sync();
     }
